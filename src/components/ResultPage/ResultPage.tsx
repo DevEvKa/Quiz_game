@@ -11,12 +11,27 @@ interface resultPageProps {
 const ResultPage: React.FC<resultPageProps> = ({ count }) => {
     const [resultRightQuestionCount, setResultRightQuestionCount] = useState(0);
     const [textResult, setTextResult] = useState('');
+    const [currentWordsDeclension, setCurrentWordsDeclension] = useState('');
+
+    const wordsDeclensionvalues: string[] = ['верный ответ', 'верных ответа', 'верных ответов'];
+
+    const getDeclension = (score: number, wordsAarray: string[]) => {
+        score = Math.abs(score) % 100;
+        var score1 = score % 10;
+        if (score > 10 && score < 20) { return wordsAarray[2]; }
+        if (score1 > 1 && score1 < 5) { return wordsAarray[1]; }
+        if (score1 == 1) { return wordsAarray[0]; }
+        return wordsAarray[2];
+    }
 
 
     useEffect(() => {
         setResultRightQuestionCount(count);
+        setCurrentWordsDeclension(getDeclension(count, wordsDeclensionvalues));
         getResult();
     }, [count]);
+
+
 
     const getResult = () => {
         let correctAnswerPercentage: number = count / totalQuestionsNumber * 100;
@@ -30,7 +45,7 @@ const ResultPage: React.FC<resultPageProps> = ({ count }) => {
 
     return (
         <div className="result">
-            <p className="result__score">Ваш результат: {resultRightQuestionCount} верных ответов</p>
+            <p className="result__score">Ваш результат: {resultRightQuestionCount} {currentWordsDeclension}</p>
             <p>{textResult}</p>
         </div>
     );
