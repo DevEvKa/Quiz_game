@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 //component imports
 import Header from "./components/Header/Header";
@@ -13,8 +13,10 @@ import { totalQuestionsNumber } from './data/questions'
 import { QuestionProps } from "./data/questions";
 
 
+//styles
+import GlobalStyle from "./styles/global"
 
-export default function App() {
+const App: React.FC = () => {
 
   const [gameStatus, setGameStatus] = useState("on start");
   const [resultValue, setResultValue] = useState(0);
@@ -68,13 +70,18 @@ export default function App() {
   }
 
   return (
-    <div className="App">
-      <div className="container mx-auto max-w-2xl pt-5">
-        <Header gameStatus={gameStatus} startGame={startGame} />
-        {gameStatus === "in progress" && <QuestionCard onChange={passCount} questionsNumberArr={questionsNumberArr} />}
-        {gameStatus === "finished" && <ResultPage count={resultValue} />}
+    <Fragment>
+      <GlobalStyle />
+      <div className="App">
+        <div className="container mx-auto max-w-2xl pt-5">
+          <Header gameStatus={gameStatus} startGame={startGame} />
+          {gameStatus === "in progress" && <QuestionCard onChange={passCount} questionsNumberArr={questionsNumberArr} />}
+          {gameStatus === "finished" && <ResultPage count={resultValue} />}
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
+
+export default App;
 
