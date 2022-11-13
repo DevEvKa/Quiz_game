@@ -11,6 +11,7 @@ const Header: React.FC<IHeaderProps> = ({ gameStatus, startGame }: IHeaderProps)
     const hideStartBtn = () => {
         const startBtn = document.querySelector('.header__startBtn');
         startBtn?.classList.add('hidden');
+        console.log('dsfghj')
     }
 
     return (

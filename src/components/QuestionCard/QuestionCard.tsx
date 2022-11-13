@@ -21,7 +21,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
     const [answerResult, setAnswerResult] = useState('');
     const [rightAnswersCount, setRightAnswersCount] = useState(0);
 
-    //кнопка
+    //элементы интерфейса
+    const [answerCheckboxAccessibility, setAnswerCheckboxAccessibility] = useState(false);
+    const [submitButtonState, setSubmitButtonState] = useState(true);
+    //const [answerCheckboxStatus, setAnswerCheckboxStatus] = useState(true);
+
     const [continueButtonText, setContinueButtonText] = useState('Продолжить');
 
     //состояние игры
@@ -54,10 +58,27 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
     }, []);
 
 
+    //обрабатываем выбор ответа
+    const chooseAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let checkBox = event.target.checked;
+        console.log(checkBox, event.target)
+
+        setUserAnswer(event.target.value);
+
+        const submitButton = document.querySelector('.submitAnswer');
+        if (submitButton) {
+            setSubmitButtonState(false);
+        }
+
+
+    }
+
 
     //обрабатываем подтверждение ответа
     const submitAnswer = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
+
+        setAnswerCheckboxAccessibility(true);
 
         //проверяем правильность ответа
         if (currentQuestion.correctAnswer === userAnswer) {
@@ -82,16 +103,28 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         if (questionNumber < questionsListLength) {
             getQuestion(questionNumber);
             setQuestionNumber(questionNumber + 1);
+
+            const radioInputs = document.querySelectorAll('.question__answer-radio');
+            radioInputs.forEach(radioInput => {
+                let radioInputElement = radioInput as HTMLInputElement;
+                if (radioInputElement) {
+                    radioInputElement.checked = false;
+                }
+            })
+
             if (questionNumber === questionsListLength - 1) {
                 setContinueButtonText('Завершить игру');
             }
         } else {
+
             const questionForm = document.querySelector('.question__form');
             const questionScore = document.querySelector('.question__score');
             questionForm?.classList.add('hidden');
             questionScore?.classList.add('hidden');
             gameStatus = "finished";
         }
+
+        setAnswerCheckboxAccessibility(false);
         //
         //закрываем блоки с ответом и доп.информацией по вопросу
         const questionResult = document.querySelector('.question__result');
@@ -104,7 +137,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         onChange(rightAnswersCount, gameStatus);
     }
 
-
+    const ggg = false;
     return (
         <div className="question">
             <div className="question__score score">
@@ -113,33 +146,33 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
             <form className="question__form">
                 <p className="question__text">{currentQuestion.text}</p>
                 <div>
-                    <input className="question__answer-radio" onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setUserAnswer(currentQuestion.answers[0])} type="radio" id="questionChoice1"
-                        name="answer" value="true" />
+                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice1"
+                        value={currentQuestion.answers[0]} name="answer" disabled={answerCheckboxAccessibility} />
                     <label className="question__answer-label" htmlFor="questionChoice1">{currentQuestion.answers[0]}</label>
 
-                    <input className="question__answer-radio" onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setUserAnswer(currentQuestion.answers[1])} type="radio" id="questionChoice2"
-                        name="answer" value="false" />
+                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice2"
+                        value={currentQuestion.answers[1]} name="answer" disabled={answerCheckboxAccessibility} />
                     <label className="question__answer-label" htmlFor="questionChoice2">{currentQuestion.answers[1]}</label>
 
-                    <input className="question__answer-radio" onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setUserAnswer(currentQuestion.answers[2])} type="radio" id="questionChoice4"
-                        name="answer" value="false" />
+                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice4"
+                        value={currentQuestion.answers[2]} name="answer" disabled={answerCheckboxAccessibility} />
                     <label className="question__answer-label" htmlFor="questionChoice4">{currentQuestion.answers[2]}</label>
 
-                    <input className="question__answer-radio" onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setUserAnswer(currentQuestion.answers[3])} type="radio" id="questionChoice3"
-                        name="answer" value="false" />
+                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice3"
+                        value={currentQuestion.answers[3]} name="answer" disabled={answerCheckboxAccessibility} />
                     <label className="question__answer-label" htmlFor="questionChoice3">{currentQuestion.answers[3]}</label>
                 </div>
                 <div>
-                    <button type="submit" className="submitAnswer btn" onClick={submitAnswer}>Ответить</button>
+                    <button type="submit" className="submitAnswer btn" onClick={submitAnswer} disabled={submitButtonState} >Ответить</button>
                 </div>
             </form>
 
-            <div className="question__result hidden">
+            <div className="question__result">
                 <p>{answerResult}</p>
             </div>
 
-            <div className="question__info hidden">
-
+            <div className="question__info">
+                {currentQuestion.image && <img src={require(`../../images/question_images/${currentQuestion.id}.jpg`)} alt={images[0].alt} className="question__image" />}
                 {currentQuestion.fact && <p className="question__fact">{currentQuestion.fact}</p>}
 
                 <div className="nextQuestion">
@@ -154,5 +187,5 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 }
 export default QuestionCard;
 
-// {questionImage && <img src={require({ questionImage })} alt={images[0].alt} className="question__image object-cover h-48 w-96" />}
-//{currentQuestion.fact && <img src={require({ currentQuestion.fact })} alt={images[0].alt} className="question__image object-cover h-48 w-96" />}
+
+
