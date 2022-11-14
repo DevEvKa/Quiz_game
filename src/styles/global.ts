@@ -8,15 +8,18 @@ const GlobalStyle = createGlobalStyle`
 }
 
 html {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
+	font-size: 18px;
+}
 
-} 
 body {
     min-height: 100vh;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+	padding: 25px;
+	margin: 0 auto;
+	color: #000426;
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
 }
 
 @keyframes gradient {
@@ -32,8 +35,11 @@ body {
 }
 
 #root {
-    border: 1px solid red;
+	max-width: 1220px;
     margin: 0 auto;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, 0.6);
+	border: 1px solid red;
 }
 `;
 
