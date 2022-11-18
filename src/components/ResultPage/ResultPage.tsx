@@ -4,6 +4,10 @@ import React, { useState, useEffect } from "react";
 import textResultsList from "../../data/textResults";
 import { totalQuestionsNumber } from "../../data/questions";
 
+//styles
+import { FinalResult, Score, Description } from './styles';
+
+
 interface resultPageProps {
     count: number,
 }
@@ -44,10 +48,10 @@ const ResultPage: React.FC<resultPageProps> = ({ count }) => {
 
 
     return (
-        <div className="result">
-            <p className="result__score">Ваш результат: {resultRightQuestionCount} {currentWordsDeclension}</p>
-            <p>{textResult}</p>
-        </div>
+        <FinalResult>
+            <Score>Ваш результат: {resultRightQuestionCount} {currentWordsDeclension}</Score>
+            <Description>{textResult}</Description>
+        </FinalResult>
     );
 }
 export default ResultPage;

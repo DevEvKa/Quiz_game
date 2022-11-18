@@ -5,6 +5,9 @@ import Questions from "../../data/questions";
 import { images } from '../../data/images';
 import { totalQuestionsNumber } from "../../data/questions";
 
+//styles
+import { Container, Score, Form, QuestionText, AnswerText, AnswerRadio, AnswerLabel, SubmitBtn, Result, QuestionInfo, InfoImage, InfoFact, NextQuestionBtn } from './styles';
+
 
 interface QuestionCardProps {
     questionsNumberArr: number[],
@@ -24,9 +27,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
     //элементы интерфейса
     const [answerCheckboxAccessibility, setAnswerCheckboxAccessibility] = useState(false);
     const [submitButtonState, setSubmitButtonState] = useState(true);
-    //const [answerCheckboxStatus, setAnswerCheckboxStatus] = useState(true);
+    const [resultVisibility, setResultVisibility] = useState(false);
+    const [questionInfoVisibility, setQuestionInfoVisibility] = useState(false);
+    const [nextBtnVisibility, setNextBtnVisibility] = useState(false);
+
+    //QuestionInfo, InfoImage, InfoFact, NextQuestionBtn
 
     const [continueButtonText, setContinueButtonText] = useState('Продолжить');
+
+
 
     //состояние игры
     let gameStatus = 'in progress';
@@ -61,7 +70,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
     //обрабатываем выбор ответа
     const chooseAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         let checkBox = event.target.checked;
-        console.log(checkBox, event.target)
 
         setUserAnswer(event.target.value);
 
@@ -80,6 +88,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
         setAnswerCheckboxAccessibility(true);
 
+
         //проверяем правильность ответа
         if (currentQuestion.correctAnswer === userAnswer) {
             setRightAnswersCount(rightAnswersCount + 1);
@@ -89,10 +98,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         }
 
         //открываем блоки с ответом и доп.информацией по вопросу
-        const questionResult = document.querySelector('.question__result');
-        const questionInfo = document.querySelector('.question__info');
-        questionResult?.classList.remove('hidden');
-        questionInfo?.classList.remove('hidden');
+        setResultVisibility(true);
+        setQuestionInfoVisibility(true);
+        setNextBtnVisibility(true);
     }
 
     //отображаем следующий вопрос
@@ -116,21 +124,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
                 setContinueButtonText('Завершить игру');
             }
         } else {
-
-            const questionForm = document.querySelector('.question__form');
-            const questionScore = document.querySelector('.question__score');
-            questionForm?.classList.add('hidden');
-            questionScore?.classList.add('hidden');
             gameStatus = "finished";
         }
 
         setAnswerCheckboxAccessibility(false);
-        //
+
         //закрываем блоки с ответом и доп.информацией по вопросу
-        const questionResult = document.querySelector('.question__result');
-        const questionInfo = document.querySelector('.question__info');
-        questionResult?.classList.add('hidden');
-        questionInfo?.classList.add('hidden');
+        setResultVisibility(false);
+        setQuestionInfoVisibility(false);
+        setNextBtnVisibility(false);
     }
 
     const passCount = () => {
@@ -139,53 +141,54 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
     const ggg = false;
     return (
-        <div className="question">
-            <div className="question__score score">
-                <p className="score__display">Score: {questionNumber}/{totalQuestionsNumber}</p>
-            </div>
-            <form className="question__form">
-                <p className="question__text">{currentQuestion.text}</p>
-                <div>
-                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice1"
-                        value={currentQuestion.answers[0]} name="answer" disabled={answerCheckboxAccessibility} />
-                    <label className="question__answer-label" htmlFor="questionChoice1">{currentQuestion.answers[0]}</label>
+        <Container>
 
-                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice2"
-                        value={currentQuestion.answers[1]} name="answer" disabled={answerCheckboxAccessibility} />
-                    <label className="question__answer-label" htmlFor="questionChoice2">{currentQuestion.answers[1]}</label>
+            <Score>Score: {questionNumber}/{totalQuestionsNumber}</Score>
 
-                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice4"
-                        value={currentQuestion.answers[2]} name="answer" disabled={answerCheckboxAccessibility} />
-                    <label className="question__answer-label" htmlFor="questionChoice4">{currentQuestion.answers[2]}</label>
+            <Form>
+                <QuestionText>{currentQuestion.text}</QuestionText>
+                <ul>
+                    <AnswerText>
+                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice1"
+                            value={currentQuestion.answers[0]} name="answer" disabled={answerCheckboxAccessibility} />
+                        <AnswerLabel htmlFor="questionChoice1">{currentQuestion.answers[0]}</AnswerLabel>
+                    </AnswerText>
+                    <AnswerText>
+                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice2"
+                            value={currentQuestion.answers[1]} name="answer" disabled={answerCheckboxAccessibility} />
+                        <AnswerLabel htmlFor="questionChoice2">{currentQuestion.answers[1]}</AnswerLabel>
+                    </AnswerText>
+                    <AnswerText>
+                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice4"
+                            value={currentQuestion.answers[2]} name="answer" disabled={answerCheckboxAccessibility} />
+                        <AnswerLabel htmlFor="questionChoice4">{currentQuestion.answers[2]}</AnswerLabel>
+                    </AnswerText>
+                    <AnswerText>
+                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice3"
+                            value={currentQuestion.answers[3]} name="answer" disabled={answerCheckboxAccessibility} />
+                        <AnswerLabel htmlFor="questionChoice3">{currentQuestion.answers[3]}</AnswerLabel>
+                    </AnswerText>
 
-                    <input className="question__answer-radio" onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice3"
-                        value={currentQuestion.answers[3]} name="answer" disabled={answerCheckboxAccessibility} />
-                    <label className="question__answer-label" htmlFor="questionChoice3">{currentQuestion.answers[3]}</label>
-                </div>
-                <div>
-                    <button type="submit" className="submitAnswer btn" onClick={submitAnswer} disabled={submitButtonState} >Ответить</button>
-                </div>
-            </form>
+                </ul>
+                <SubmitBtn type="submit" className="submitAnswer btn" onClick={submitAnswer} disabled={submitButtonState} >Ответить</SubmitBtn>
+            </Form>
 
-            <div className="question__result">
-                <p>{answerResult}</p>
-            </div>
+            {resultVisibility && <Result>{answerResult}</Result>}
 
-            <div className="question__info">
-                {currentQuestion.image && <img src={require(`../../images/question_images/${currentQuestion.id}.jpg`)} alt={images[0].alt} className="question__image" />}
-                {currentQuestion.fact && <p className="question__fact">{currentQuestion.fact}</p>}
-
-                <div className="nextQuestion">
-                    <button type="submit" className="nextQuestion btn" onClick={(e) => { nextQuestion(e); passCount(); }} >{continueButtonText}</button>
-                </div>
-            </div>
+            {questionInfoVisibility &&
+                <QuestionInfo>
+                    {currentQuestion.image && <InfoImage src={require(`../../images/question_images/${currentQuestion.id}.jpg`)} alt={images[0].alt} />}
+                    {currentQuestion.fact && <InfoFact>{currentQuestion.fact}</InfoFact>}
+                </QuestionInfo>
+            }
+            {nextBtnVisibility && <NextQuestionBtn type="submit" onClick={(e) => { nextQuestion(e); passCount(); }} >{continueButtonText}</NextQuestionBtn>}
 
 
 
-        </div>
+        </Container>
     );
 }
 export default QuestionCard;
 
 
-
+//bundle.js:40648 Please do not use @import CSS syntax in createGlobalStyle at this time, as the CSSOM APIs we use in production do not handle it well. Instead, we recommend using a library such as react-helmet to inject a typical <link> meta tag to the stylesheet, or simply embedding it manually in your index.html <head> section for a simpler app.

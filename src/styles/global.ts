@@ -1,5 +1,7 @@
 import { createGlobalStyle } from "styled-components";
+
 const GlobalStyle = createGlobalStyle`
+
 * {
     margin: 0;
     padding: 0;
@@ -8,16 +10,29 @@ const GlobalStyle = createGlobalStyle`
 }
 
 html {
-	font-size: 18px;
+	font-size: 22px;
+
+	@media (max-width: 960px) {
+		font-size: 18px;
+	}
+
+	@media (max-width: 760px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 480px) {
+		font-size: 14px;
+	}
 }
 
 body {
     min-height: 100vh;
     width: 100%;
-	padding: 25px;
+	padding: 1em;
 	margin: 0 auto;
-	color: #000426;
-	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	font-family: 'Comfortaa', cursive;
+	color: #AFDAFC;
+	background: linear-gradient(-45deg, #0065D6, #002147, #0054B2, #00326B);
 	background-size: 400% 400%;
 	animation: gradient 15s ease infinite;
 }
@@ -37,10 +52,9 @@ body {
 #root {
 	max-width: 1220px;
     margin: 0 auto;
-	padding: 10px;
-	background-color: rgba(255, 255, 255, 0.6);
-	border: 1px solid red;
+	padding: 0.5em;
 }
 `;
 
 export default GlobalStyle;
+
