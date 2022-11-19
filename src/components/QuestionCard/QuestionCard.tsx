@@ -14,6 +14,7 @@ interface QuestionCardProps {
     onChange: (count: number, status: string) => void,
 }
 
+
 const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChange }) => {
 
     //вспомогательные
@@ -23,6 +24,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
     const [userAnswer, setUserAnswer] = useState('');
     const [answerResult, setAnswerResult] = useState('');
     const [rightAnswersCount, setRightAnswersCount] = useState(0);
+    const [checkedMarkOpacity1, setCheckedMarkOpacity] = useState(1);
 
     //элементы интерфейса
     const [answerCheckboxAccessibility, setAnswerCheckboxAccessibility] = useState(false);
@@ -68,17 +70,20 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
 
     //обрабатываем выбор ответа
-    const chooseAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const chooseAnswer = (event: any) => {
+        console.log('click');
         let checkBox = event.target.checked;
-
+        console.log(event.target);
         setUserAnswer(event.target.value);
+
+
 
         const submitButton = document.querySelector('.submitAnswer');
         if (submitButton) {
             setSubmitButtonState(false);
         }
 
-
+        setCheckedMarkOpacity(1);
     }
 
 
@@ -112,13 +117,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
             getQuestion(questionNumber);
             setQuestionNumber(questionNumber + 1);
 
-            const radioInputs = document.querySelectorAll('.question__answer-radio');
-            radioInputs.forEach(radioInput => {
-                let radioInputElement = radioInput as HTMLInputElement;
-                if (radioInputElement) {
-                    radioInputElement.checked = false;
-                }
-            })
+            setCheckedMarkOpacity(0);
+
+            // const radioInputs = document.querySelectorAll('.question__answer-radio');
+            // radioInputs.forEach(radioInput => {
+            //     let radioInputElement = radioInput as HTMLInputElement;
+            //     if (radioInputElement) {
+            //         radioInputElement.checked = false;
+            //     }
+            // })
 
             if (questionNumber === questionsListLength - 1) {
                 setContinueButtonText('Завершить игру');
@@ -133,6 +140,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         setResultVisibility(false);
         setQuestionInfoVisibility(false);
         setNextBtnVisibility(false);
+
+        setCheckedMarkOpacity(0);
     }
 
     const passCount = () => {
@@ -149,22 +158,22 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
                 <QuestionText>{currentQuestion.text}</QuestionText>
                 <ul>
                     <AnswerText>
-                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice1"
+                        <AnswerRadio checkedMarkOpacity={checkedMarkOpacity1} onClick={(event) => chooseAnswer(event)} type="radio" id="questionChoice1"
                             value={currentQuestion.answers[0]} name="answer" disabled={answerCheckboxAccessibility} />
                         <AnswerLabel htmlFor="questionChoice1">{currentQuestion.answers[0]}</AnswerLabel>
                     </AnswerText>
                     <AnswerText>
-                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice2"
+                        <AnswerRadio checkedMarkOpacity={checkedMarkOpacity1} onClick={(event) => chooseAnswer(event)} type="radio" id="questionChoice2"
                             value={currentQuestion.answers[1]} name="answer" disabled={answerCheckboxAccessibility} />
                         <AnswerLabel htmlFor="questionChoice2">{currentQuestion.answers[1]}</AnswerLabel>
                     </AnswerText>
                     <AnswerText>
-                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice4"
+                        <AnswerRadio checkedMarkOpacity={checkedMarkOpacity1} onClick={(event) => chooseAnswer(event)} type="radio" id="questionChoice4"
                             value={currentQuestion.answers[2]} name="answer" disabled={answerCheckboxAccessibility} />
                         <AnswerLabel htmlFor="questionChoice4">{currentQuestion.answers[2]}</AnswerLabel>
                     </AnswerText>
                     <AnswerText>
-                        <AnswerRadio onChange={(event) => chooseAnswer(event)} type="radio" id="questionChoice3"
+                        <AnswerRadio checkedMarkOpacity={checkedMarkOpacity1} onClick={(event) => chooseAnswer(event)} type="radio" id="questionChoice3"
                             value={currentQuestion.answers[3]} name="answer" disabled={answerCheckboxAccessibility} />
                         <AnswerLabel htmlFor="questionChoice3">{currentQuestion.answers[3]}</AnswerLabel>
                     </AnswerText>

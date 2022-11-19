@@ -48,50 +48,39 @@ export const AnswerLabel = styled.label`
 
     &:before {
         content: '';
-        width: 13px;
-        height: 13px;
+        width: 1.1em;
+        height: 1.1em;
         display: inline-block;
-        margin-right: 10px;
-        border: 1px solid red;
+        margin-right: 1em;
+        border: 2px solid #FFF;
         border-radius: 100%;
     }
     &:after {
         content: '';
         position: absolute;
-        left: 5px;
+        left: 0.37em;
         top: 50%;
         transform: translateY(-50%);
-        width: 5px;
-        height: 5px;
+        width: 0.5em;
+        height: 0.5em;
         background-color: #FFF;
         border-radius: 100%;
         opacity: 0;
     }
-
-
-
 `;
 
-export const AnswerRadio = styled.input`
+export const AnswerRadio = styled.input<{ checkedMarkOpacity: number }>`
     position: absolute;
     width: 1px;
     height: 1px;
     opacity: 0;
 
     &:checked {
-        & ~ ${AnswerLabel} {
-opacity: 1;
+        & ~ ${AnswerLabel}::after {
+            opacity: ${props => props.checkedMarkOpacity};
         }
     }
 `;
-
-
-
-
-
-
-
-
 
 
 
