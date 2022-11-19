@@ -4,17 +4,13 @@ import React, { useState } from "react";
 import { Container, Title, Text, StartButton } from './styles';
 
 //types
-interface IHeaderProps {
-    gameStatus: string,
-    startGame: () => void,
-}
+import { IHeaderProps } from "../../types";
 
 
 const Header: React.FC<IHeaderProps> = ({ gameStatus, startGame }: IHeaderProps) => {
 
     const [TextVisibility, setTextVisibility] = useState(true);
     const [StartButtonVisibility, setStartButtonVisibility] = useState(true);
-
 
     //скрываем кнопку и текст по клику на кнопку
     const hideStartBtn = () => {
@@ -31,4 +27,5 @@ const Header: React.FC<IHeaderProps> = ({ gameStatus, startGame }: IHeaderProps)
 
     );
 }
+
 export default Header;

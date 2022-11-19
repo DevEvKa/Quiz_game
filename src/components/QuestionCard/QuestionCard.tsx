@@ -8,12 +8,8 @@ import { totalQuestionsNumber } from "../../data/questions";
 //styles
 import { Container, Score, Form, QuestionText, AnswerText, AnswerRadio, AnswerLabel, SubmitBtn, Result, QuestionInfo, InfoImage, InfoFact, NextQuestionBtn } from './styles';
 
-
-interface QuestionCardProps {
-    questionsNumberArr: number[],
-    onChange: (count: number, status: string) => void,
-}
-
+//types
+import { QuestionCardProps } from "../../types";
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChange }) => {
 
@@ -57,7 +53,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
     //получаем вопрос
     const getQuestion = (number: number) => {
-
         let currentQuestionNumber = questionsNumberArr[number];
         setCurrentQuestion(Questions[currentQuestionNumber - 1]);
     }
@@ -71,18 +66,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
     //обрабатываем выбор ответа
     const chooseAnswer = (event: any) => {
-        console.log('click');
-        let checkBox = event.target.checked;
-        console.log(event.target);
         setUserAnswer(event.target.value);
-
-
-
         const submitButton = document.querySelector('.submitAnswer');
         if (submitButton) {
             setSubmitButtonState(false);
         }
-
         setCheckedMarkOpacity(1);
     }
 
@@ -92,7 +80,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         event.preventDefault();
 
         setAnswerCheckboxAccessibility(true);
-
 
         //проверяем правильность ответа
         if (currentQuestion.correctAnswer === userAnswer) {
@@ -119,14 +106,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
 
             setCheckedMarkOpacity(0);
 
-            // const radioInputs = document.querySelectorAll('.question__answer-radio');
-            // radioInputs.forEach(radioInput => {
-            //     let radioInputElement = radioInput as HTMLInputElement;
-            //     if (radioInputElement) {
-            //         radioInputElement.checked = false;
-            //     }
-            // })
-
             if (questionNumber === questionsListLength - 1) {
                 setContinueButtonText('Завершить игру');
             }
@@ -148,12 +127,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
         onChange(rightAnswersCount, gameStatus);
     }
 
-    const ggg = false;
     return (
         <Container>
-
             <Score>Score: {questionNumber}/{totalQuestionsNumber}</Score>
-
             <Form>
                 <QuestionText>{currentQuestion.text}</QuestionText>
                 <ul>
@@ -181,9 +157,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
                 </ul>
                 <SubmitBtn type="submit" className="submitAnswer btn" onClick={submitAnswer} disabled={submitButtonState} >Ответить</SubmitBtn>
             </Form>
-
             {resultVisibility && <Result>{answerResult}</Result>}
-
             {questionInfoVisibility &&
                 <QuestionInfo>
                     {currentQuestion.image && <InfoImage src={require(`../../images/question_images/${currentQuestion.id}.jpg`)} alt={images[0].alt} />}
@@ -191,13 +165,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ questionsNumberArr, onChang
                 </QuestionInfo>
             }
             {nextBtnVisibility && <NextQuestionBtn type="submit" onClick={(e) => { nextQuestion(e); passCount(); }} >{continueButtonText}</NextQuestionBtn>}
-
-
-
         </Container>
     );
 }
+
 export default QuestionCard;
-
-
-//bundle.js:40648 Please do not use @import CSS syntax in createGlobalStyle at this time, as the CSSOM APIs we use in production do not handle it well. Instead, we recommend using a library such as react-helmet to inject a typical <link> meta tag to the stylesheet, or simply embedding it manually in your index.html <head> section for a simpler app.
